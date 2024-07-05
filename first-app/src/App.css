@@ -1,0 +1,113 @@
+body{
+    background: linear-gradient(#0ca5b0, #68baab);
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #f9f9f9d6;
+    box-sizing: border-box;
+}
+root{
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.panel{
+    background-color: #2c2b2b;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 #000000d6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+    margin-top: 1rem;
+    width: 90%;
+}
+.nav-panel{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.nav-panel ul{
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+.nav-panel ul li{
+    margin-right: 10px;
+}
+.box{
+    background-color: #fefeeb;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 #000000d6;
+    width: 90%;
+    height: 600px;
+    margin: auto;
+    margin-top: 20px;
+    display: grid;
+    justify-content: start;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.box-message {
+    background-color: #2c2b2b;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 #000000d6;
+    justify-content: start;
+    display: grid;
+    width: 90%;
+    max-width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.message-person-name {
+    font-weight: bold;
+    color: #edd862d4;
+    margin: 0;
+}
+
+.message-person-content {
+    margin: 0;
+    color: #ffffff;
+}
+.write-message{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: 50px;
+    background-color: #2c2b2b;
+    box-shadow: 0 0 10px 0 #000000d6;
+    border-radius: 10px;
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+}
+.send-message{
+    background-color: #edd862d4;
+    color: #2c2b2b;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    
+    margin-right: 10px;
+    cursor: pointer;
+}
+.button-send{
+
+    background: #0ca5b0;
+    color: #fefeeb;
+    cursor: pointer;
+}
