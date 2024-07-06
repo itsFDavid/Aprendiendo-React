@@ -1,0 +1,91 @@
+body{
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background: linear-gradient(#1f1f20, #2b4c7e);
+    background-size: cover;
+    background-attachment: fixed;
+}
+h1{
+    text-align: center;
+    margin: 20px 0;
+    padding: 0;
+}
+
+
+.body-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 90%;
+
+}
+
+
+.table-users{
+    width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;;
+}
+.table-users thead{
+  background: linear-gradient(#0860e5, transparent);
+  text-align: left;
+  border-radius: 5px;
+}
+.thead-id{
+    color: #f1c40f;
+    width: 10%;
+}
+.thead-actions{
+    width: 100%;
+}
+
+.table-users td,.table-users th{
+    padding: 12px;
+    border-bottom: 1px solid #111;
+}
+.td-id{
+    color: #f1c40f;
+    width: 10%;
+}
+.td-name{
+    width: 60%;
+}
+.name-person{
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  width: 100%;
+}
+.actions{
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+.btn-edit{
+  padding: 5px 15px;
+  font-size: 1em;
+  background: linear-gradient(#bca95f, #ffa413);
+  border: none;
+  box-shadow: #f1c40f 0px 0px 5px;
+  border-radius: 5px;
+  &&:hover{
+    background: linear-gradient(#c8bd93, #ffc25f);
+  }
+}
+.btn-delete{
+  padding: 5px 15px;
+  font-size: 1em;
+  background: linear-gradient(#bc5f5f, #ff1313);
+  border: none;
+  box-shadow: #f1c40f 0px 0px 5px;
+  border-radius: 5px;
+  &&:hover{
+    background: linear-gradient(#ba8282, #ff6868);
+  }
+}
