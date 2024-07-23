@@ -8,6 +8,43 @@ body{
     color: #f9f9f9d6;
     box-sizing: border-box;
 }
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+    && h1{
+        margin: 10px;
+    }
+
+}
+
+.header img {
+    height: 50px; 
+    width: auto;
+}
+
+.rainbow-text {
+    font-size: 2em;
+    font-weight: bold;
+    background-image: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: rainbow-animation 5s infinite linear;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
 root{
     display: grid;
     place-items: center;
@@ -41,7 +78,7 @@ root{
 .nav-panel ul li{
     margin-right: 10px;
 }
-.box{
+.box {
     background-color: #fefeeb;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 #000000d6;
@@ -49,26 +86,37 @@ root{
     height: 600px;
     margin: auto;
     margin-top: 20px;
-    display: grid;
-    justify-content: start;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     scrollbar-width: thin;
+    padding: 10px;
 }
 
-.box-message {
+.message-person {
     background-color: #2c2b2b;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 #000000d6;
-    justify-content: start;
-    display: grid;
-    width: 90%;
-    max-width: 90%;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
+    min-width: 40%;
+    max-width: 70%;
+    margin: 10px;
     padding: 10px;
+    text-align: left;
+    align-self: flex-start;
 }
+
+.message-person-you {
+    background-color: #000000d6;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 #000000d6;
+    max-width: 70%;
+    margin: 10px;
+    padding: 10px;
+    margin-left: auto;
+    text-align: right;
+    align-self: flex-end;
+}
+
 
 .message-person-name {
     font-weight: bold;
@@ -80,6 +128,7 @@ root{
     margin: 0;
     color: #ffffff;
 }
+
 .write-message{
     display: flex;
     align-items: center;
@@ -88,7 +137,7 @@ root{
     background-color: #2c2b2b;
     box-shadow: 0 0 10px 0 #000000d6;
     border-radius: 10px;
-    width: 90%;
+    width: 90%;    
     margin: auto;
     margin-top: 10px;
 }
@@ -97,17 +146,34 @@ root{
     color: #2c2b2b;
     border: none;
     border-radius: 10px;
-    padding: 10px;
-    width: 50%;
     display: flex;
     justify-content: space-between;
     
     margin-right: 10px;
     cursor: pointer;
+    && input{
+        background-color: #000000d6;
+        border-radius: 5px;
+        margin: 5px 2px;
+        padding: 5px;
+        color: #ffffff
+    }
 }
 .button-send{
 
     background: #0ca5b0;
     color: #fefeeb;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+@media screen and (max-width: 768px){
+    .send-message{
+        && input{
+            width: 100%;
+        }
+    }
+    
 }
