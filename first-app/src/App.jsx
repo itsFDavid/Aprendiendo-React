@@ -10,7 +10,6 @@ function App() {
     <>
      <header className="header">
         <h1 className='rainbow-text'>Chat Io</h1>
-        <img src='../public/ios/72.png' alt="Logo" />
       </header>
      <Messages/>
     </>
