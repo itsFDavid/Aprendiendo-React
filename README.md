@@ -1,7 +1,3 @@
-# Monorepo Projects
-
-Este monorepositorio contiene múltiples proyectos. A continuación se presenta una lista de los proyectos, junto con una breve descripción y enlaces a sus respectivos directorios.
-
 ## Índice
 
 1. [Proyecto 1: Chat en Tiempo Real](#https://chat-io-gkym.onrender.com/)
