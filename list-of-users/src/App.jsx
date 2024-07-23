@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import PropTypes from "prop-types";
+
 const API_URL = "https://api-topicos-77j7.onrender.com/";
-
-
 
 function Button({ text, onClick }) {
   const typeClass = text === "Eliminar" ? "btn-delete" : "btn-edit";
@@ -11,35 +10,86 @@ function Button({ text, onClick }) {
     <input type="button" value={text} onClick={onClick} className={typeClass} />
   );
 }
-
+const fetchData = () => {
+  return fetch(API_URL)
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error("Error fetching:", error);
+      return []; // Retorna un array vacío en caso de error
+    });
+};
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
 function App() {
-  const [data, setData] = useState();
-  
+  const [data, setData] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState("");
+
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => setData(data));
+   fetchData().then((data)=>setData(data));
   }, []);
 
   const handleDelete = (id) => {
-    console.log("Eliminar", id);
+    fetch(`${API_URL}`, { 
+      method: 'DELETE', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({ id: id }) 
+    })
+      .then(() => setData(data.filter((person) => person.id !== id)))
+      .catch((error) => console.error("Error deleting:", error));
   };
 
   const handleEdit = (id) => {
-    console.log("Editar", id);
-  
+    if (editId === id) {
+      fetch(`${API_URL}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, nombre: editName })
+      })
+        .then(() => {
+          setData(data.map((person) =>
+            person.id === id ? { ...person, nombre: editName } : person
+          ));
+          setEditId(null);
+          setEditName("");
+        })
+        .catch((error) => console.error("Error updating:", error));
+      } else {
+        setEditId(id);
+        
+        setEditName(data.find((person) => person.id === id).nombre);
+    }
   };
+
+  const handleNameChange = (event) => {
+    setEditName(event.target.value);
+  };
+  const handleAddUser = () => {
+    const name = document.querySelector(".input-name").value;
+    fetch(`${API_URL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: name })
+    })
+      .then((response) => response.json())
+      .then(() => {fetchData().then((data)=>setData(data))
+        document.querySelector(".input-name").value = "";
+      })
+      .catch((error) => console.error("Error adding:", error));
+  }
 
   return (
     <>
       <main>
         <h1>Lista de nombres</h1>
       </main>
+      <form className="form-add">
+        <input type="text" placeholder="Nombre" className="input-name" />
+        <Button text="Agregar" onClick={handleAddUser}/>
+      </form>
       <section className="body-content">
         <table className="table-users">
           <thead>
@@ -50,30 +100,36 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {data &&
-              data.map((person) => {
-                const { id, nombre } = person;
-                return (
-                  <tr key={id}>
-                    <td className="td-id">{id}</td>
-                    <td className="td-name">
+            {data.map((person) => {
+              const { id, nombre } = person;
+              return (
+                <tr key={id}>
+                  <td className="td-id">{id}</td>
+                  <td className="td-name">
+                    {editId === id ? (
                       <input
                         type="text"
-                        value={nombre}
+                        value={editName}
+                        onChange={handleNameChange}
                         className="name-person"
-                        readOnly={true}
                       />
-                    </td>
-                    <td className="actions">
-                      <Button text="Editar" onClick={() => handleEdit(id)} />
-                      <Button
-                        text="Eliminar"
-                        onClick={() => handleDelete(id)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
+                    ) : (
+                      nombre
+                    )}
+                  </td>
+                  <td className="actions">
+                    <Button
+                      text={editId === id ? "Guardar" : "Editar"}
+                      onClick={() => handleEdit(id)}
+                    />
+                    <Button
+                      text="Eliminar"
+                      onClick={() => handleDelete(id)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </section>
