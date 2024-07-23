@@ -1,70 +1,83 @@
-
 import '../App.css';
 import { WriteMessage } from './WriteMessage';
-//import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js"
+import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+import { useEffect, useState, useRef } from 'react';
 
-const DATA= [
-    {
-        id: 1,
-        nombre: 'Juan',
-        message: 'Hola, ¿cómo estás?'
-    },
-    {
-        id: 2,
-        nombre: 'Pedro',
-        message: 'Bien, gracias. ¿Y tú?'
-    },
-    {
-        id: 3,
-        nombre: 'Juan',
-        message: 'También bien. ¿Qué has hecho hoy?'
-    },
-    {
-        id: 4,
-        nombre: 'Pedro',
-        message: 'He ido a la playa con unos amigos. ¿Y tú?'
-    },
-    {
-        id: 5,
-        nombre: 'Juan',
-        message: 'He estado en casa todo el día. ¿Te apetece quedar mañana?'
-    },
-    {
-        id: 6,
-        nombre: 'Pedro',
-        message: 'Sí, me encantaría. ¿Dónde y a qué hora?'
-    },
-    {
-        id: 7,
-        nombre: 'Juan',
-        message: 'En el parque a las 5. ¿Te parece bien?'
-    },
-    {
-        id: 8,
-        nombre: 'Pedro',
-        message: 'Perfecto. Nos vemos mañana.'
+const users = ["Irbin", "Genaro", "Paco", "Angel", "Emiliano", "Lalo", "Francisco", "Luis", "Jorge", "Ricardo", "Raul", "Eduardo", "Carlos", "Juan", "Pedro", "Jose", "Manuel", "Miguel", "Antonio", "Jesus", "Alejandro", "David", "Daniel", "Jose Luis", "Javier", "Fernando", "Alberto", "Ramon", "Roberto", "Arturo", "Victor", "Oscar", "Rafael", "Sergio", "Mauricio", "Hector", "Guillermo", "Adrian", "Martin", "Salvador", "Rodrigo", "Ruben", "Mario", "Francisco Javier", "Erick", "Hugo", "Enrique", "Armando", "Gustavo", "Pablo"];
+
+const getUsername = () => {
+    const name = localStorage.getItem('name');
+    if (!name) {
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+        localStorage.setItem('name', randomUser);
+        return randomUser;
     }
-]
+    return name;
+};
 
 export function Messages() {
+    const [data, setData] = useState([]);
+    const [username, setUsername] = useState(getUsername());
+    const [socket] = useState(() => io('https://topicos-avanzados.onrender.com', {
+        auth: {
+            username: getUsername(),
+            serverOffset: 0
+        }
+    }));
+    const messageEndRef = useRef(null);
 
-    
-        
+    useEffect(() => {
+        const handleMessage = (msg, sender, serverOffset) => {
+            socket.auth.serverOffset = serverOffset;
+            setData(data => [...data, { id: data.length + 1, nombre: sender, message: msg }]);
+        };
+
+        socket.on('chat message', handleMessage);
+
+        return () => {
+            socket.off('chat message', handleMessage);
+        };
+    }, [socket]);
+
+    useEffect(() => {
+        if (messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [data]);
+
+    const handleNameChange = (newName) => {
+        const prevName = localStorage.getItem('name');
+        localStorage.setItem('name', newName);
+        setUsername(newName);
+        socket.auth.username = newName;
+
+        // Update the style of previous messages
+        setData(prevData =>
+            prevData.map(item =>
+                item.nombre === prevName ? { ...item, nombre: newName } : item
+            )
+        );
+    };
+
     return (
         <>
-        <section className='box'>    
-        {
-            DATA.map((data) => (
-                <div key={data.id}
-                className='box-message'>
-                    <h2 className='message-person-name'>{data.nombre}</h2>
-                    <p className='message-person-content'>{data.message}</p>
-                </div>
-            ))
-        }
-        
-        </section>
-        <WriteMessage/>
+            <section className='box'>
+                {data.map((data) => (
+                    <div key={data.id}
+                        className={
+                            username === data.nombre ? 'message-person-you' : 'message-person'
+                        }>
+                        {username === data.nombre ? (
+                            <h2 className='message-person-name'>You</h2>
+                        ) : (
+                            <h2 className='message-person-name'>{data.nombre}</h2>
+                        )}
+                        <p className='message-person-content'>{data.message}</p>
+                    </div>
+                ))}
+                <div ref={messageEndRef} />
+            </section>
+            <WriteMessage socket={socket} onNameChange={handleNameChange} />
         </>
-    )
+    );
 }
